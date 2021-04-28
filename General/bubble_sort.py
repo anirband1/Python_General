@@ -18,6 +18,6 @@ def bubble_sort(list_passed, descending=False):
     return list_passed
 
 
-list_to_sort = [90, 1, -85, 0, 34, 25, 6, 17, 73]
+list_to_sort = [90, 1, -85, 0, 25, 34, 25, 6, 17, 73]
 
 print(bubble_sort(list_to_sort))
