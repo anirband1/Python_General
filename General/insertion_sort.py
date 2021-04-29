@@ -1,6 +1,9 @@
 '''
-start arranging in ascending order from the start of the list
+INSERTION SORT
+
+Starts arranging in increments from the start of the list.
 '''
+# changes original list, won't work with tuples
 
 
 def insertion_sort(list_passed, descending=False):
