@@ -1,15 +1,11 @@
 sentence1 = "hello from the other side"
 
-similarity = 0
+l_stopwords = []
 
-words_in_sentence1 = sentence.split(" ")
+# making a list of stopwords from Stopwords.txt file
+with open("Stopwords.txt", "r") as f:
+    for word in f:
+        word = word.split("\n")[0]
+        l_stopwords.append(word)
 
-
-def letter_comparision(word1, word2):
-    if len(word1) < len(word2):
-        if word1 in word2:
-            similarity += 1
-    elif word2 in word1:
-        similarity += 1
-
-    return similarity
+print(l_stopwords)
