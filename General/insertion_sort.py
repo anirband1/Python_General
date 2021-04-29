@@ -4,8 +4,7 @@ INSERTION SORT
 Starts arranging in increments from the start of the list.
 '''
 # changes original list, won't work with tuples
-
-
+'''
 def insertion_sort(list_passed, descending=False):
     for i in range(len(list_passed)):
         for j in range(len(list_passed[:list_passed[i]])):
@@ -14,6 +13,21 @@ def insertion_sort(list_passed, descending=False):
                 list_passed[j] = list_passed[i]
                 list_passed[i] = temp
 
+    return list_passed[::-1]
+'''
+
+
+def insertion_sort(list_passed, descending=False):
+    for i in range(len(list_passed)):
+        print("i: ", list_passed[i])
+        for j in range(len(list_passed[:i])):
+            print("j:", list_passed[j])
+            if list_passed[i] < list_passed[j]:
+                temp = list_passed[j]
+                list_passed[j] = list_passed[i]
+                list_passed[i] = temp
+    if descending:
+        list_passed = list_passed[::-1]
     return list_passed
 
 
