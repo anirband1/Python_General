@@ -2,6 +2,6 @@ from nltk.corpus import stopwords
 
 l_stopwords = sorted(stopwords.words("english"))
 
-with open("Stopwords.txt", "w") as filename:
+with open("Stopwords.txt", "w") as f:
     for word in l_stopwords:
-        filename.write(f"{word}\n")
+        f.write(f"{word}\n")
