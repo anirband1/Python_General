@@ -33,7 +33,10 @@ def compare_in_words(list1, list2):
             elif word1 in word2:
                 word_similarity += 100
                 total += 100
-    return (word_similarity / total * 100)
+    try:
+        return (word_similarity / total * 100)
+    except (ZeroDivisionError):
+        return float(word_similarity * 100)
 
 
 # making a list of stopwords from Stopwords.txt file
