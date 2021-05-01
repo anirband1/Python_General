@@ -70,9 +70,12 @@ l_words1 = stopwords_and_case(sentence1)
 l_words2 = stopwords_and_case(sentence2)
 
 # to see the list of words without stopwords
-# print(f"first list: {l_words1}\nsecond list: {l_words2}")
+print(f"first list: {l_words1}\nsecond list: {l_words2}")
 
 # comparing every word in each sentence
 similarity_in_words = compare_in_words(l_words1, l_words2)
 
 print(f"The sentences are {cutoff(similarity_in_words, 3)}% similar")
+
+# TO DO:
+# [] , ['hello', 'chair'] total += 200
