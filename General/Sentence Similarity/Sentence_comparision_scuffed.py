@@ -15,27 +15,11 @@ def stopwords_and_case(sentence):
     return l_new_sentence
 
 
-# function to cut off decimal points
-def cutoff(num, places):
-    temp = num * (10**places)
-    temp = int(temp)
-    return temp / (10**places)
-
-
-# main processing
+# finding how similar are 2 words in a list
+# ex. "pass" and "passed"; since "pass" is in "passed", they are 98% similar (number 98 is arbitrary)
 def compare_in_words(list1, list2):
     word_similarity = 0
     total = 0
-    # remove same words in both lists
-    for word in list1[::-1]:
-        if word in list2:
-            list1.remove(word)
-            list2.remove(word)
-            word_similarity += 100
-            total += 100
-
-    # finding how similar are 2 words in a list
-    # ex. "pass" and "passed"; since "pass" is in "passed", they are 98% similar (number 98 is arbitrary)
     for word1 in list1:
         for word2 in list2:
             if len(word1) < len(word2):
@@ -46,12 +30,26 @@ def compare_in_words(list1, list2):
                 if word2 in word1:
                     word_similarity += 98
                 total += 100
+            elif word1 in word2:
+                word_similarity += 100
+                total += 100
     try:
-        print(f"{word_similarity}/{total}")
-        print(word_similarity / total * 100)
         return (word_similarity / total * 100)
     except (ZeroDivisionError):
-        return float(word_similarity)
+        return float(word_similarity * 100)
+
+
+def compare_sets(list1, list2):
+    set1 = set(list1)
+    set2 = set(list2)
+    intersection = set1 & set2
+    union = set1 | set2
+    try:
+        jaccard_percent = (len(intersection) / len(union)) * 100
+        return jaccard_percent
+    except:
+        # print("The sentences are 100% similar")
+        pass
 
 
 # making a list of stopwords from Stopwords.txt file
@@ -61,9 +59,8 @@ with open("Stopwords.txt", "r") as f:
         word = word.split("\n")[0]
         l_stopwords.append(word)
 
-# main
 sentence1 = normalize(input("First sentence:  "))
-sentence2 = normalize(input("Second sentence:  "))
+sentence2 = normalize(input("Second sentence: "))
 
 # removing stopwords and changing case for the 2 sentences
 l_words1 = stopwords_and_case(sentence1)
@@ -74,5 +71,8 @@ l_words2 = stopwords_and_case(sentence2)
 
 # comparing every word in each sentence
 similarity_in_words = compare_in_words(l_words1, l_words2)
+jaccard_percent = compare_sets(l_words1, l_words2)
 
-print(f"The sentences are {cutoff(similarity_in_words, 3)}% similar")
+print(
+    f"The sentences are {(similarity_in_words * jaccard_percent)/100}% similar"
+)
