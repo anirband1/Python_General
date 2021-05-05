@@ -31,13 +31,15 @@ def compare_in_words(list1, list2):
         if word in list2:
             list1.remove(word)
             list2.remove(word)
+            print(list1)
+            print(list2)
             word_similarity += 100
             total += 100
 
     # finding how similar are 2 words in a list
     # ex. "pass" and "passed"; since "pass" is in "passed", they are 98% similar (number 98 is arbitrary)
-    for word1 in list1:
-        for word2 in list2:
+    for word1 in list1[::-1]:
+        for word2 in list2[::-1]:
             if len(word1) < len(word2):
                 if word1 in word2:
                     word_similarity += 98
@@ -46,13 +48,16 @@ def compare_in_words(list1, list2):
                 if word2 in word1:
                     word_similarity += 98
                 total += 100
+            elif len(word1) == len(word2):
+                word_similarity += 0
+                total += 100
     try:
-        print(f"{word_similarity}/{total}")
-        print(word_similarity / total * 100)
         return (word_similarity / total * 100)
     except (ZeroDivisionError):
         return float(word_similarity)
 
+
+# def remaining_words
 
 # making a list of stopwords from Stopwords.txt file
 l_stopwords = []
@@ -70,7 +75,7 @@ l_words1 = stopwords_and_case(sentence1)
 l_words2 = stopwords_and_case(sentence2)
 
 # to see the list of words without stopwords
-print(f"first list: {l_words1}\nsecond list: {l_words2}")
+# print(f"first list: {l_words1}\nsecond list: {l_words2}")
 
 # comparing every word in each sentence
 similarity_in_words = compare_in_words(l_words1, l_words2)
@@ -78,4 +83,5 @@ similarity_in_words = compare_in_words(l_words1, l_words2)
 print(f"The sentences are {cutoff(similarity_in_words, 3)}% similar")
 
 # TO DO:
+# Suffixes logic
 # [] , ['hello', 'chair'] total += 200
