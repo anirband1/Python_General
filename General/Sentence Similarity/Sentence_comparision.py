@@ -36,21 +36,21 @@ def compare_in_words(list1, list2):
             word_similarity += 100
             total += 100
 
-    # finding how similar are 2 words in a list
-    # ex. "pass" and "passed"; since "pass" is in "passed", they are 98% similar (number 98 is arbitrary)
-    for word1 in list1[::-1]:
-        for word2 in list2[::-1]:
-            if len(word1) < len(word2):
-                if word1 in word2:
-                    word_similarity += 98
-                total += 100
-            elif len(word2) < len(word1):
-                if word2 in word1:
-                    word_similarity += 98
-                total += 100
-            elif len(word1) == len(word2):
-                word_similarity += 0
-                total += 100
+    # # finding how similar are 2 words in a list
+    # # ex. "pass" and "passed"; since "pass" is in "passed", they are 98% similar (number 98 is arbitrary)
+    # for word1 in list1[::-1]:
+    #     for word2 in list2[::-1]:
+    #         if len(word1) < len(word2):
+    #             if word1 in word2:
+    #                 word_similarity += 98
+    #             total += 100
+    #         elif len(word2) < len(word1):
+    #             if word2 in word1:
+    #                 word_similarity += 98
+    #             total += 100
+    #         elif len(word1) == len(word2):
+    #             word_similarity += 0
+    #             total += 100
     try:
         return (word_similarity / total * 100)
     except (ZeroDivisionError):
