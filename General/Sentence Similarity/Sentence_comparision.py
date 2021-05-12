@@ -1,6 +1,10 @@
 import sys
 
 
+def main(sentence1, sentence2):
+    pass
+
+
 # removes extra spaces and terminates program if sentence is empty
 def normalize(sentence):
     sentence = sentence.strip()
@@ -96,7 +100,7 @@ def compare_words(word1, word2):
 
     elif len(word2) < len(word1) and word2 in word1:
         suffix = word1[len(word2):]
-        # sring , pring
+        # spring , ring
         if word2[:len(word1)] != word1:
             similarity = 0
         # passed, pass
@@ -140,9 +144,6 @@ sentence2 = normalize(input("Second sentence: "))
 
 # removing stopwords and changing case for the 2 sentences
 l_words1, l_words2 = sentence_in_sentence(sentence1, sentence2)
-
-# uncomment the next line to see the list of words without stopwords
-# print(f"first list: {l_words1}\nsecond list: {l_words2}")
 
 # comparing every word in each sentence
 similarity_in_words = compare_lists(l_words1, l_words2)
