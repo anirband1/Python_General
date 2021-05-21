@@ -1,40 +1,71 @@
 import sys
 
+__BREAK_SAME_WORD = 90
+__ENDING_SUFFIX = 80
+__ENDING_NOT_SUFFIX = 50
+__CUTOFF = 5
 
-def main(sentence1, sentence2):
-    pass
+
+# public function, called by main program
+def compare(sentence1, sentence2):
+
+    sentence1 = __normalize(sentence1)
+    sentence2 = __normalize(sentence2)
+
+    # removing stopwords and changing case for the 2 sentences
+    # returns None if word in description
+    try:
+        l_words1, l_words2 = __sentence_in_sentence(sentence1, sentence2)
+    except:
+        return (100.0)
+
+    # comparing every word in each sentence
+    similarity_in_words = __compare_lists(l_words1, l_words2)
+
+    return __cutoff(similarity_in_words, __CUTOFF)
 
 
-# removes extra spaces and terminates program if sentence is empty
-def normalize(sentence):
+# removes extra spaces
+def __normalize(sentence):
     sentence = sentence.strip()
     while ("  " in sentence):
         sentence = sentence.replace("  ", " ")
-    if sentence == "" or sentence == " ":
-        print("Invalid. Sentence cannot be blank")
-        sys.exit()
-    else:
-        return sentence
+
+    return sentence
 
 
 # if smaller sentence is a part of bigger sentence, returns 100% similar
 # if it isn't, makes the smaller sentence the main sentence to compare with
-def sentence_in_sentence(sentence1, sentence2):
+def __sentence_in_sentence(sentence1, sentence2):
     if len(sentence1) <= len(sentence2):
         if sentence1 in sentence2:
-            print("The sentences are 100.0% similar")
-            sys.exit()
+            return  # return None error resolved in compare(); try-except
         else:
-            return stopwords_and_case(sentence1), stopwords_and_case(sentence2)
+            return __create_list(sentence1), __create_list(sentence2)
     elif sentence2 in sentence1:
-        print("The sentences are 100.0% similar")
-        sys.exit()
+        return  # return None error resolved in compare(); try-except
     else:
-        return stopwords_and_case(sentence2), stopwords_and_case(sentence1)
+        return __create_list(sentence2), __create_list(sentence1)
 
 
 # removes stopwords from sentences and converts them to lowercase
-def stopwords_and_case(sentence):
+def __create_list(sentence):
+
+    # making a list of stopwords from Stopwords.txt file
+    l_stopwords = []
+    with open("lib/Stopwords.txt", "r") as f:
+        for word in f:
+            word = word.split("\n")[0]
+            l_stopwords.append(word)
+
+    # making a list of special characters from Special_chars.txt file
+    l_special = []
+    with open("lib/Special_chars.txt", "r") as f:
+        for word in f:
+            word = word.split("\n")[0]
+            l_special.append(word)
+
+    # returns a list of non-stopwords
     l_new_sentence = []
     l_sentence = sentence.split(" ")
     for word in l_sentence:
@@ -50,14 +81,14 @@ def stopwords_and_case(sentence):
 
 
 # function to cut off decimal points
-def cutoff(num, places):
+def __cutoff(num, places):
     temp = num * (10**places)
     temp = int(temp)
     return temp / (10**places)
 
 
 # compare every word in first sentence with second sentence
-def compare_lists(list1, list2):
+def __compare_lists(list1, list2):
     maximum = 0
     total = 0
     similarity = 0
@@ -65,7 +96,7 @@ def compare_lists(list1, list2):
     for word1 in list1:
         maximum = 0
         for word2 in list2:
-            temp_sim = compare_words(word1, word2)
+            temp_sim = __compare_words(word1, word2)
             word_similarity = max(maximum, temp_sim)
             maximum = word_similarity
         similarity += word_similarity
@@ -79,12 +110,20 @@ def compare_lists(list1, list2):
 
 # if program enters this function, max value is changed from 100 to 90
 # return similarity between 2 words (value arbitrary)
-def compare_words(word1, word2):
+def __compare_words(word1, word2):
+
+    # making a list of suffixes from Suffixes.txt file
+    l_suffixes = []
+    with open("lib/Suffixes.txt", "r") as f:
+        for word in f:
+            word = word.split("\n")[0]
+            l_suffixes.append(word)
+
     similarity = 0
 
     # pass, pass
     if len(word1) == len(word2) and (word1 in word2 or word2 in word1):
-        similarity = 90
+        similarity = __BREAK_SAME_WORD
 
     elif len(word1) < len(word2) and word1 in word2:
         suffix = word2[len(word1):]
@@ -93,61 +132,25 @@ def compare_words(word1, word2):
             similarity = 0
         # pass, passed
         elif suffix in l_suffixes:
-            similarity = 80
+            similarity = __ENDING_SUFFIX
         # pass, passthrough
         else:
-            similarity = 50
+            similarity = __ENDING_NOT_SUFFIX
 
     elif len(word2) < len(word1) and word2 in word1:
         suffix = word1[len(word2):]
         # spring , ring
-        if word2[:len(word1)] != word1:
+        if word1[:len(word2)] != word2:
             similarity = 0
         # passed, pass
         elif suffix in l_suffixes:
-            similarity = 80
+            similarity = __ENDING_SUFFIX
         # passthrough, pass
         else:
-            similarity = 50
+            similarity = __ENDING_NOT_SUFFIX
 
     # pass, encompass
     else:
         similarity = 0
 
     return (similarity)
-
-
-# making a list of stopwords from Stopwords.txt file
-l_stopwords = []
-with open("Stopwords.txt", "r") as f:
-    for word in f:
-        word = word.split("\n")[0]
-        l_stopwords.append(word)
-
-# making a list of suffixes from Suffixes.txt file
-l_suffixes = []
-with open("Suffixes.txt", "r") as f:
-    for word in f:
-        word = word.split("\n")[0]
-        l_suffixes.append(word)
-
-# making a list of special characters from Special_chars.txt file
-l_special = []
-with open("Special_chars.txt", "r") as f:
-    for word in f:
-        word = word.split("\n")[0]
-        l_special.append(word)
-
-# main
-sentence1 = normalize(input("First sentence:  "))
-sentence2 = normalize(input("Second sentence: "))
-
-# removing stopwords and changing case for the 2 sentences
-l_words1, l_words2 = sentence_in_sentence(sentence1, sentence2)
-
-# comparing every word in each sentence
-similarity_in_words = compare_lists(l_words1, l_words2)
-
-print(
-    f"The first sentence is {cutoff(similarity_in_words, 3)}% similar to the second one"
-)
