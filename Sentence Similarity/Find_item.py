@@ -35,7 +35,7 @@ def user_input():
 
 
 # creating dataframe from excel sheet
-path = "../../../../../../01-Documents/02-Microsoft/01-Excel/Items.xlsx"
+path = "../../../../../01-Documents/02-Microsoft/01-Excel/Items.xlsx"
 data = pd.read_excel(path, engine='openpyxl')
 df = pd.DataFrame(data)
 
