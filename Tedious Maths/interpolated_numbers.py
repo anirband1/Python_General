@@ -9,6 +9,7 @@ divs = int(input("Divisions:    "))
 
 def Divs():
 
+    # a way to quit the infinite loop
     try:
         high = float(input("high:    "))
         low = float(input("low:     "))
